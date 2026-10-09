@@ -1,9 +1,5 @@
 
 locals {
-  ssh_sg_name          = "${var.project_id}-ssh-sg"
-  public_http_sg_name  = "${var.project_id}-public-http-sg"
-  private_http_sg_name = "${var.project_id}-private-http-sg"
-
   common_tags = {
     Project = var.project_id
   }
@@ -19,7 +15,7 @@ data "aws_instance" "private" {
 
 # SSH security group
 resource "aws_security_group" "ssh" {
-  name        = local.ssh_sg_name
+  name        = "${var.project_id}-ssh-sg"
   description = "Allow SSH and ICMP from approved IP ranges"
   vpc_id      = var.vpc_id
 
@@ -50,7 +46,7 @@ resource "aws_security_group_rule" "ssh_icmp_ingress" {
 
 # Public HTTP security group
 resource "aws_security_group" "public_http" {
-  name        = local.public_http_sg_name
+  name        = "${var.project_id}-public-http-sg"
   description = "Allow public HTTP and approved ICMP traffic"
   vpc_id      = var.vpc_id
 
@@ -81,7 +77,7 @@ resource "aws_security_group_rule" "public_http_icmp_ingress" {
 
 # Private HTTP security group
 resource "aws_security_group" "private_http" {
-  name        = local.private_http_sg_name
+  name        = "${var.project_id}-private-http-sg"
   description = "Allow HTTP only from the public HTTP security group"
   vpc_id      = var.vpc_id
 
